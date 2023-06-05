@@ -103,6 +103,7 @@ app.post("/logout", (req, res) => {
 app.post("/upload-by-link", async (req, res) => {
   const { link } = req.body;
   const newName = "photo" + Date.now() + ".jpg";
+
   await imageDownloader.image({
     url: link,
     dest: __dirname + "/uploads/" + newName,
@@ -123,7 +124,7 @@ app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
     const ext = parts[parts.length - 1];
     const newPath = path + "." + ext;
     fs.renameSync(path, newPath);
-    uploadedFiles.push(newPath.replace("uploads/", ""));
+    uploadedFiles.push(newPath.replace("uploads\\", ""));
   }
   res.json(uploadedFiles);
 });
