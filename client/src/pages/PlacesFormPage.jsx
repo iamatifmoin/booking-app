@@ -1,11 +1,12 @@
 import PhotosUploader from "../PhotosUploader.jsx";
 import Perks from "../Perks.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import AccountNav from "../AccountNav";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 export default function PlacesFormPage() {
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
@@ -17,6 +18,23 @@ export default function PlacesFormPage() {
   const [maxGuests, setMaxGuests] = useState(1);
   const [price, setPrice] = useState(100);
   const [redirect, setRedirect] = useState(false);
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    axios.get("/places/" + id).then((response) => {
+      const { data } = response;
+      setTitle(data.title);
+      setAddress(data.address);
+      setAddedPhotos(data.photos);
+      setDescription(data.description);
+      setPerks(data.perks);
+      setExtraInfo(data.extraInfo);
+      setCheckIn(data.checkIn);
+      setCheckOut(data.checkOut);
+      setMaxGuests(data.maxGuests);
+    });
+  }, [id]);
 
   function inputHeader(text) {
     return <h2 className="text-2xl mt-4">{text}</h2>;
@@ -35,9 +53,7 @@ export default function PlacesFormPage() {
 
   async function savePlace(ev) {
     ev.preventDefault();
-
-    // new place
-    await axios.post("/places", {
+    const placeData = {
       title,
       address,
       addedPhotos,
@@ -47,9 +63,18 @@ export default function PlacesFormPage() {
       checkIn,
       checkOut,
       maxGuests,
-      price,
-    });
-    setRedirect(true);
+    };
+    // new place
+    if (id) {
+      await axios.put("/places", {
+        id,
+        ...placeData,
+      });
+      setRedirect(true);
+    } else {
+      await axios.post("/places", placeData);
+      setRedirect(true);
+    }
   }
   if (redirect) {
     return <Navigate to={"/account/places"} />;
