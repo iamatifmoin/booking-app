@@ -44,7 +44,7 @@ const PlacesPage = () => {
             <Link
               to={"/account/places/" + place._id}
               className="flex cursor-pointer gap-4 bg-gray-1200 p-4 rounded-2xl"
-              key={place}
+              key={place._id}
             >
               <div className="flex w-32 h-32 bg-grey-300 grow shrink-0">
                 {place.photos.length > 0 && (
