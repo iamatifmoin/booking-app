@@ -33,6 +33,7 @@ export default function PlacesFormPage() {
       setCheckIn(data.checkIn);
       setCheckOut(data.checkOut);
       setMaxGuests(data.maxGuests);
+      setPrice(data.price);
     });
   }, [id]);
 
@@ -63,6 +64,7 @@ export default function PlacesFormPage() {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     };
     // new place
     if (id) {

@@ -30,15 +30,6 @@ app.use(
   // })
 );
 
-function getUserDataFromReq(req) {
-  return new Promise((resolve, reject) => {
-    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
-      if (err) throw err;
-      resolve(userData);
-    });
-  });
-}
-
 app.get("/test", (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   res.json("test ok");
@@ -133,6 +124,7 @@ app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
   }
   res.json(uploadedFiles);
 });
+
 app.post("/places", (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   const { token } = req.cookies;
@@ -168,7 +160,7 @@ app.post("/places", (req, res) => {
   });
 });
 
-app.get("/places", (req, res) => {
+app.get("/user-places", (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   const { token } = req.cookies;
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -177,12 +169,19 @@ app.get("/places", (req, res) => {
   });
 });
 
+app.get("/places", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  res.json(await Place.find());
+});
+
 app.get("/places/:id", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const { id } = req.params;
   res.json(await Place.findById(id));
 });
 
-app.put("/places/:id", async (req, res) => {
+app.put("/places/", async (req, res) => {
   const { token } = req.cookies;
   const {
     id,
