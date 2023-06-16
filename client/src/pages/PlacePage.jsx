@@ -89,7 +89,7 @@ const PlacePage = () => {
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="aspect-square object-covercursor-pointer "
-                  src={"https://localhost:4000/uploads/" + place.photos[0]}
+                  src={"http://localhost:4000/uploads/" + place.photos[0]}
                   alt=""
                 />
               </div>
@@ -100,7 +100,7 @@ const PlacePage = () => {
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="aspect-square object-covercursor-pointer "
-                src={"https://localhost:4000/uploads/" + place.photos[1]}
+                src={"http://localhost:4000/uploads/" + place.photos[1]}
                 alt=""
               />
             )}
@@ -109,7 +109,7 @@ const PlacePage = () => {
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="aspect-square object-cover cursor-pointer relative top-2"
-                  src={"https://localhost:4000/uploads/" + place.photos[2]}
+                  src={"http://localhost:4000/uploads/" + place.photos[2]}
                   alt=""
                 />
               )}
